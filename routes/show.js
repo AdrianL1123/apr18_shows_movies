@@ -50,9 +50,7 @@ router.get("/", async (req, res) => {
   //   filters.premiere_year = { $gt: premiere_year };
   // }
   // !! use controller function
-  const genre = req.query.genre;
-  const rating = req.query.rating;
-  const premiere_year = req.query.premiere_year;
+  const { genre, rating, premiere_year } = req.query;
   try {
     const shows = await getShows(genre, rating, premiere_year);
     res.status(200).send(shows);
@@ -77,12 +75,8 @@ router.get("/:id", async (req, res) => {
 //? add
 router.post("/", async (req, res) => {
   try {
-    const title = req.body.title;
-    const creator = req.body.creator;
-    const premiere_year = req.body.premiere_year;
-    const seasons = req.body.seasons;
-    const genre = req.body.genre;
-    const rating = req.body.rating;
+    const { title, creator, premiere_year, seasons, genre, rating } = req.body;
+
     const newShow = await addShow(
       title,
       creator,
@@ -103,13 +97,8 @@ router.post("/", async (req, res) => {
 //? update
 router.put("/:id", async (req, res) => {
   try {
+    const { title, creator, premiere_year, seasons, genre, rating } = req.body;
     const show_id = req.params.id;
-    const title = req.body.title;
-    const creator = req.body.creator;
-    const premiere_year = req.body.premiere_year;
-    const seasons = req.body.seasons;
-    const genre = req.body.genre;
-    const rating = req.body.rating;
     const updatedShow = await updateShow(
       show_id,
       title,
