@@ -1,5 +1,10 @@
 const express = require("express");
-const { getShows, addShow, updateShow } = require("../controllers/show");
+const {
+  getShows,
+  getShow,
+  addShow,
+  updateShow,
+} = require("../controllers/show");
 
 // create express router for movies
 const router = express.Router();
@@ -63,7 +68,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const show = await Show.findById(req.params.id);
+    const show = await getShow(req.params.id);
     res.status(200).send(show);
   } catch (error) {
     res.status(400).send({
@@ -76,7 +81,6 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const { title, creator, premiere_year, seasons, genre, rating } = req.body;
-
     const newShow = await addShow(
       title,
       creator,
@@ -123,7 +127,7 @@ router.delete("/:id", async (req, res) => {
     const show_id = req.params.id;
     //code here
     await Show.findByIdAndDelete(show_id);
-    res.status(200).send("Show has been successfully deleted");
+    res.status(200).send(`Show #${show_id} has been successfully deleted`);
   } catch (error) {
     res.status(400).send({
       message: error.message,

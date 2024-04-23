@@ -1,26 +1,28 @@
 //* load all the models
 const Show = require("../models/show");
-const { updateMovie } = require("./movie");
 
 const getShows = async (genre, rating, premiere_year) => {
   try {
-    let shows = {};
+    let filters = {};
     if (genre) {
-      shows = await Show.find({ genre });
+      filters.genre = genre;
     }
     if (rating) {
-      shows = await Show.find({ $gt: rating });
+      filters.rating = { $gt: rating };
     }
     if (premiere_year) {
-      shows = await Show.find({ $gt: premiere_year });
+      filters.premiere_year = { $gt: premiere_year };
     }
-    if (shows) {
-      shows = await Show.find();
-    }
+    const shows = await Show.find(filters);
     return shows;
   } catch (error) {
     throw new Error(error);
   }
+};
+
+const getShow = async (id) => {
+  const show = await Show.findById(id);
+  return show;
 };
 
 //* add
