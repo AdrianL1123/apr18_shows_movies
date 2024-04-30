@@ -1,9 +1,10 @@
 //* load all the models
 const Show = require("../models/show");
 
-const getShows = async (genre, rating, premiere_year) => {
+const getShows = async (genre, rating, premiere_year, sort) => {
   try {
     let filters = {};
+    let sortQuery = { _id: -1 }; //latest entries at the top
     if (genre) {
       filters.genre = genre;
     }
@@ -13,16 +14,16 @@ const getShows = async (genre, rating, premiere_year) => {
     if (premiere_year) {
       filters.premiere_year = { $gt: premiere_year };
     }
-    const shows = await Show.find(filters);
+    if (sort === "title") {
+      sortQuery = { title: 1 };
+    } else if (sort === "rating") {
+      sortQuery = { rating: -1 };
+    }
+    const shows = await Show.find(filters).sort(sortQuery);
     return shows;
   } catch (error) {
     throw new Error(error);
   }
-};
-
-const getShow = async (id) => {
-  const show = await Show.findById(id);
-  return show;
 };
 
 //* add

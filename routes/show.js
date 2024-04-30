@@ -54,10 +54,10 @@ router.get("/", async (req, res) => {
   // if (premiere_year) {
   //   filters.premiere_year = { $gt: premiere_year };
   // }
-  // !! use controller function
-  const { genre, rating, premiere_year } = req.query;
+  //!! use controller function
+  const { genre, rating, premiere_year, sort } = req.query;
   try {
-    const shows = await getShows(genre, rating, premiere_year);
+    const shows = await getShows(genre, rating, premiere_year, sort);
     res.status(200).send(shows);
   } catch (error) {
     res.status(400).send({
@@ -68,7 +68,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const show = await getShow(req.params.id);
+    const show = await Show.findById(req.params.id);
     res.status(200).send(show);
   } catch (error) {
     res.status(400).send({

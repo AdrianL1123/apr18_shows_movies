@@ -26,10 +26,9 @@ router.get("/", async (req, res) => {
   //   });
   // }
   //! use controller function
-  const genre = req.query.genre;
-  const rating = req.query.rating;
+  const { genre, rating, sort } = req.query;
   try {
-    const movies = await getMovies(genre, rating);
+    const movies = await getMovies(genre, rating, sort);
     res.status(200).send(movies);
   } catch (error) {
     res.status(400).send({
